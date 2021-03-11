@@ -1,0 +1,150 @@
+---
+openapi: 3.0.0
+info:
+  title: Requests API
+  description: The API receives the food delivery and ride request
+  contact:
+    email: rkaur139@my.bcit.ca
+  version: 1.0.0
+
+
+tags:
+- name: mobile
+  description: Operations available to mobile
+paths:
+  /requests/food-delivery:
+
+    get:
+      tags:
+       - mobile
+      summary: Order food to a given location from a given place
+      description: Enter details and order food.
+      operationId: app.get_OrderFood
+      parameters:
+        - name: index
+          in: query
+          description: Get the event at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        "200":
+          description: Successfully returned a  Order food event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/OrderFood'
+        "400":
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+
+
+
+
+  /requests/ride-request:
+
+
+    get:
+      tags:
+        - mobile
+      summary: Book a a vehicle for a ride in the area
+      description: Book the available vehicle to ride
+      operationId: app.get_BookRide
+      parameters:
+        - name: index
+          in: query
+          description: Gets the ride request at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        "200":
+          description: successfully returned a list of book vehicle events
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/BookRide'
+        "400":
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+
+components:
+  schemas:
+    OrderFood:
+      required:
+      - drop_off_address
+      - drop_off_instructions
+      - order_id
+      - restaurant_name
+      type: object
+      properties:
+        order_id:
+          type: string
+          example: A01
+        restaurant_name:
+          type: string
+          example: Browns
+        drop_off_address:
+          type: string
+          example: 11475 78 avenue Delta
+        drop_off_instructions:
+          type: string
+          example: Meet a door
+    BookRide:
+      required:
+      - destination_address
+      - pickup_notes
+      - pickup_location
+      - ride_id
+      type: object
+      properties:
+        ride_id:
+          type: string
+          example: B01
+        pickup_location:
+          type: string
+          example: 11475 72A avenue Delta
+        destination_address:
+          type: string
+          example: 6899 128st Surrey
+        pickup_notes:
+          type: string
+          example: call me when arrive
