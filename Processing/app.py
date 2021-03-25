@@ -34,8 +34,10 @@ def populate_stats():
         file.close()
         python_content= json.loads(content)
         url=app_config['eventstore']['url']
-        current_date_time= datetime.now()
-        current_date_time_n = current_date_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+        #current_date_time= datetime.now()
+        #current_date_time_n = current_date_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+        current_date_time_n= python_content["current_date_time_n"]
+
         get= requests.get(url+"/requests/food-delivery?timestamp="+current_date_time_n)
         logger.info("INFO: No of food delivery Received event %d" %len(get.json()))
         logger.error("ERROR: Did not receieve response code 200 %d" % get.status_code)
@@ -45,7 +47,10 @@ def populate_stats():
         logger.error("ERROR: Did not receieve response code 200 %d" % get_t.status_code)
         python_content["num_order_food_request"]+= len(get.json())
         python_content["num_order_ride_request"]+= len(get_t.json())
-        python_content["current_date_time_n"]=current_date_time_n
+        current_date_time= datetime.now()
+        python_content["current_date_time_n"]= current_date_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        
         json_content= json.dumps(python_content)
 
 
