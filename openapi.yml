@@ -1,0 +1,50 @@
+---
+openapi: 3.0.0
+info:
+  title: Requests API
+  description: The API receives the food delivery and ride request
+  contact:
+    email: rkaur139@my.bcit.ca
+  version: 1.0.0
+
+paths:
+  /stats:
+   get:
+    summary: Gets the event stats
+    operationId:   app.GetStats
+    description: Gets OrderFood and riderequest processsed statistics
+    responses:
+     '200':
+       description: Successfully returned a list of  events
+       content:
+        application/json:
+         schema:
+          type: object
+          items:
+           $ref: '#/components/schemas/RequestStats'
+     '400':
+       description: Invalid request
+       content:
+        application/json:
+         schema:
+          type: object
+          properties:
+           message:
+            type: string
+
+components:
+  schemas:
+    RequestStats:
+      required:
+      - num_order_food_request
+      - num_ride_request_request
+      properties:
+        num_order_food_request:
+            type: integer
+            example: 500000
+
+        num_ride_request_request:
+          type: integer
+          example: 500000
+      type: object
+
